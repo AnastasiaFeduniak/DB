@@ -1,0 +1,591 @@
+/* dashboard.css */
+
+/* Змінні для теми (натхненно shadcn) */
+:root {
+    --background: #ffffff; /* Білий фон */
+    --foreground: #09090b; /* Майже чорний текст */
+    --card: #ffffff; /* Фон карток */
+    --card-foreground: #09090b; /* Текст на картках */
+    --popover: #ffffff;
+    --popover-foreground: #09090b;
+    --primary: #09090b; /* Основний колір (темний) */
+    --primary-foreground: #fafafa; /* Текст на основному кольорі (світлий) */
+    --secondary: #f4f4f5; /* Вторинний фон (світло-сірий) */
+    --secondary-foreground: #18181b; /* Текст на вторинному фоні */
+    --muted: #f4f4f5; /* Приглушений фон */
+    --muted-foreground: #71717a; /* Приглушений текст */
+    --accent: #f4f4f5; /* Акцентний фон */
+    --accent-foreground: #18181b; /* Текст на акцентному фоні */
+    --destructive: #ef4444; /* Колір для деструктивних дій */
+    --destructive-foreground: #fafafa;
+    --border: #e4e4e7; /* Колір рамок */
+    --input: #e4e4e7; /* Колір рамки інпутів */
+    --ring: #a1a1aa; /* Колір кільця фокусу */
+    --radius: 0.5rem; /* Радіус заокруглення */
+}
+
+body {
+    background-color: var(--secondary);
+    color: var(--foreground);
+    /* Прибираємо flex-центрування з body, воно тепер в .app-layout */
+    display: block;
+    min-height: initial;
+}
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--background);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease; /* Для анімації приховування */
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    text-align: center; /* Або вирівнювання для лого */
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    color: var(--foreground);
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 15px 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-link {
+    display: flex; /* Для іконок */
+    align-items: center; /* Вирівнювання іконок */
+    padding: 12px 20px;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-left: 3px solid transparent; /* Для активного стану */
+}
+.sidebar-nav .nav-link i { /* Стилі для іконок (потрібно додати класи або бібліотеку іконок) */
+    margin-right: 10px;
+    font-size: 1.1em; /* Розмір іконки */
+    width: 20px; /* Фіксована ширина для вирівнювання */
+    text-align: center;
+}
+
+.sidebar-nav .nav-link:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+}
+
+.sidebar-nav .nav-link.active {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    font-weight: 500;
+    border-left-color: var(--primary);
+}
+
+/* Секції для ролей (за замовчуванням приховані) */
+.role-section {
+    display: none;
+}
+/* Класи для показу секцій (будуть додаватись через JS) */
+body.role-Administrator .admin-only,
+body.role-Manager .manager-only, /* Увага: раніше було Location-Manager */
+body.role-Cashier .cashier-only {
+    display: list-item; /* Або block, якщо інша структура */
+}
+
+
+/* --- Main Content Wrapper --- */
+.main-content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary); /* Фон основної області */
+}
+
+/* --- App Header --- */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: var(--background);
+    border-bottom: 1px solid var(--border);
+    position: sticky; /* Щоб хедер залишався при прокрутці */
+    top: 0;
+    z-index: 10;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+}
+#current-section-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-left: 15px;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+}
+#user-info {
+    margin-right: 20px;
+    color: var(--muted-foreground);
+    font-size: 0.9em;
+}
+.logout-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--foreground);
+    padding: 8px 15px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.logout-btn:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.menu-toggle-btn {
+    display: none; /* Показувати тільки на малих екранах */
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    padding: 0 10px 0 0;
+}
+
+/* --- Content Area --- */
+.content-area {
+    padding: 30px;
+    flex-grow: 1;
+}
+
+/* Стилізація секцій контенту */
+.content-section {
+    display: none; /* Секції приховані за замовчуванням */
+}
+.content-section.active {
+    display: block; /* Активна секція видима */
+}
+
+/* --- Dashboard Metrics --- */
+.dashboard-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Адаптивна сітка */
+    gap: 25px; /* Відстань між картками */
+    margin-top: 20px;
+}
+
+.metric-card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* Легка тінь */
+}
+
+.metric-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--card-foreground);
+}
+
+.metric-card p, .metric-card ul {
+    font-size: 1.8em; /* Великий розмір для метрики */
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 5px;
+    margin-top: 5px; /* Додамо відступ зверху для списків */
+    padding-left: 0; /* Прибираємо відступ списку */
+    list-style: none; /* Прибираємо маркери списку */
+}
+
+.metric-card ul li {
+    font-size: 0.6em; /* Повертаємо менший розмір для елементів списку */
+    font-weight: 400;
+    color: var(--muted-foreground);
+    margin-bottom: 5px;
+    line-height: 1.4;
+    overflow: hidden; /* Обрізаємо довгі назви */
+    text-overflow: ellipsis; /* Додаємо три крапки */
+    white-space: nowrap; /* Забороняємо перенос рядка */
+}
+.metric-card ul li:last-child {
+    margin-bottom: 0;
+}
+
+.metric-description {
+    font-size: 0.85em;
+    color: var(--muted-foreground);
+}
+
+
+/* --- Адаптивність --- */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed; /* Або absolute */
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+        margin-left: -250px; /* Сховати за замовчуванням */
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .sidebar.open {
+        margin-left: 0; /* Показати */
+    }
+    .menu-toggle-btn {
+        display: block; /* Показати кнопку */
+    }
+    .main-content-wrapper {
+        width: 100%; /* Зайняти всю ширину */
+    }
+    .app-header, .content-area {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    #current-section-title {
+        font-size: 1.1em;
+    }
+     .login-container { /* Якщо стилі логіну теж тут */
+        padding: 25px;
+        max-width: 90%;
+    }
+    .dashboard-metrics {
+        grid-template-columns: 1fr; /* Одна колонка на мобільних */
+    }
+}
+
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 15px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container input[type="search"] {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    min-width: 250px; /* Adjust as needed */
+}
+.search-container input[type="search"]:focus {
+     outline: none;
+     border-color: var(--ring);
+     box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.2); /* Example focus */
+}
+
+/* --- Action Buttons --- */
+.action-button {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+.action-button:hover {
+    background-color: #333; /* Darker hover */
+}
+
+.cancel-button {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+    border: 1px solid var(--border);
+     padding: 9px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+.cancel-button:hover {
+    background-color: #e4e4e7; /* Slightly darker secondary */
+}
+
+
+/* --- Data Tables Styling (ЗМІНЕНО) --- */
+.data-table { /* ЗАСТОСОВУЄТЬСЯ до всіх таблиць з цим класом */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden; /* For border-radius */
+    border: 1px solid var(--border);
+    font-size: 0.9em;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.data-table th {
+    background-color: var(--secondary);
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tr:hover {
+    background-color: var(--muted);
+}
+
+/* Styles for Edit/Delete buttons in table */
+.data-table .action-cell button { /* ЗАСТОСОВУЄТЬСЯ до всіх кнопок дій */
+    margin-right: 5px;
+    padding: 5px 10px;
+    font-size: 0.85em;
+}
+.data-table .action-cell button.edit-btn {
+    background-color: #ffc107; /* Yellowish */
+    color: #333;
+}
+.data-table .action-cell button.edit-btn:hover {
+     background-color: #e0a800;
+}
+
+.data-table .action-cell button.delete-btn {
+    background-color: var(--destructive);
+    color: var(--destructive-foreground);
+}
+.data-table .action-cell button.delete-btn:hover {
+     background-color: #c82333;
+}
+
+
+/* --- Modal Styling --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex; /* Show when .show class is added */
+}
+
+.modal-content {
+    background-color: var(--background);
+    margin: auto;
+    padding: 30px 40px;
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 600px; /* Max width */
+    border-radius: var(--radius);
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    max-height: 90vh; /* Limit height */
+    overflow-y: auto; /* Add scroll if content overflows */
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--foreground);
+    text-decoration: none;
+}
+
+/* Загальний стиль для заголовків модальних вікон */
+.modal-content h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: var(--foreground);
+}
+
+/* Form specific styles */
+/* Загальні стилі для форм у модалках */
+.modal form .form-group {
+    margin-bottom: 15px; /* Slightly less margin in modal */
+}
+.modal form .form-group label {
+     margin-bottom: 6px;
+     display: block; /* Щоб label був над полем */
+     font-weight: 500;
+     color: var(--muted-foreground);
+}
+.modal form .form-group input,
+.modal form .form-group select,
+.modal form .form-group textarea {
+    width: 100%;
+    padding: 10px 12px; /* Adjust padding */
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-sizing: border-box;
+    font-size: 0.95em;
+    background-color: #fff; /* White background for form inputs */
+    color: var(--foreground); /* Текст в інпутах */
+}
+.modal form .form-group select {
+     appearance: none; /* Basic custom select arrow */
+     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236c757d%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+     background-repeat: no-repeat;
+     background-position: right 1rem center;
+     background-size: .65em auto;
+     padding-right: 2.5rem; /* Make space for arrow */
+}
+.modal form .form-group input:focus,
+.modal form .form-group select:focus,
+.modal form .form-group textarea:focus {
+     outline: none;
+     border-color: var(--ring);
+     box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.2);
+}
+
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.error-message { /* Стиль для повідомлень про помилки в формах */
+    color: var(--destructive);
+    font-size: 0.85em;
+    margin-top: 10px;
+    min-height: 1.2em;
+}
+
+
+/* --- Role-Based Visibility --- */
+/* Hide elements meant only for admin by default */
+.admin-only {
+    display: none !important; /* Use important to override potential conflicts */
+}
+/* Show admin-only elements when the body has the Administrator role class */
+
+/* Adjust display for buttons within table cells */
+body.role-Administrator .data-table .admin-only { /* Застосувати до всіх data-table */
+     display: inline-block !important;
+}
+/* Adjust display for sidebar list items */
+
+
+/* Приховати останній стовпець (Actions) для не-адмінів у всіх таблицях даних */
+/*body:not(.role-Administrator) .data-table th:last-child,
+body:not(.role-Administrator) .data-table td:last-child {
+    display: none;
+}*/
+
+/* Стилі для Manager */
+.role-section, /* Для пунктів меню */
+.admin-only, 
+.manager-only, 
+.cashier-only,
+.high-only { /* Додали новий клас */
+    display: none; 
+}
+
+.cashier-closed {
+    display: none !important;
+}
+  /* Приховування стовпця "Дії" для не-менеджерів у таблицях авторів та категорій */
+  /* Припускаємо, що відповідні ролі (Адмін) мають доступ до цих дій теж */
+  body:not(.role-Manager):not(.role-Administrator) .author-table th:last-child,
+  body:not(.role-Manager):not(.role-Administrator) .author-table td:last-child {
+      display: none;
+  }
+
+  body:not(.role-Manager):not(.role-Administrator) .category-table th:last-child,
+  body:not(.role-Manager):not(.role-Administrator) .category-table td:last-child {
+      display: none;
+  }
+
+
+  .sidebar-nav ul li.dropdown-container {
+    position: relative; /* Потрібно для позиціонування меню */
+}
+
+.sidebar-nav .dropdown-toggle .dropdown-arrow {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.sidebar-nav .dropdown-container.open .dropdown-toggle .dropdown-arrow {
+    transform: rotate(180deg); /* Поворот стрілки при відкритті */
+}
+
+.sidebar-nav .dropdown-menu {
+    display: none; /* Приховано за замовчуванням */
+    list-style: none;
+    padding-left: 20px; /* Відступ для вкладених пунктів */
+    /* Можна додати стилі для фону, тіней, як у звичайних меню */
+    background-color: #f0f0f0; /* Приклад фону */
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.sidebar-nav .dropdown-container.open .dropdown-menu {
+    display: block; /* Показати меню при класі 'open' */
+}
+
+.sidebar-nav .dropdown-menu li a {
+    display: block;
+    padding: 8px 15px;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.sidebar-nav .dropdown-menu li a:hover {
+    background-color: #e0e0e0; /* Підсвітка при наведенні */
+    color: #000;
+}

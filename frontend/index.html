@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BookWorld</title> <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>BookWorld</h2> </div>
+            <nav class="sidebar-nav" id="sidebarNav"> <ul>
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard-content"><i class="icon-dashboard"></i> Dashboard</a></li>
+                    <li><a href="#employees" class="nav-link" data-section="employees-content"><i class="icon-users"></i> Employees</a></li>
+                    <li><a href="#books" class="nav-link" data-section="books-content"><i class="icon-books"></i> Books</a></li>
+                    <li><a href="#authors" class="nav-link" data-section="authors-content"><i class="icon-authors"></i> Authors</a></li>
+                    <li"><a href="#categories" class="nav-link" data-section="categories-content"><i class="icon-categories"></i> Categories</a></li>
+                    <li><a href="#clients" class="nav-link" data-section="clients-content"><i class="icon-users"></i> Clients</a></li>
+                    <li class><a href="#stock" class="nav-link" data-section="stock-content"><i class="icon-stock"></i>Stock</a></li>
+                    <li><a href="#recent-orders" class="nav-link" data-section="recent-orders-content"><i class="icon-recent"></i> Orders</a></li>
+                    
+                    <li class="dropdown-container">
+                        <a href="#" class="nav-link dropdown-toggle"><i class="icon-export"></i> Export <span class="dropdown-arrow">&#9662;</span></a>
+                        <ul class="dropdown-menu" id="export-dropdown-menu">
+                            <li><a href="#" data-format="csv">Export CSV</a></li>
+                            <li><a href="#" data-format="json">Export JSON</a></li>
+                            <li><a href="#" data-format="excel">Export Excel</a></li>
+                            <li><a href="#" data-format="pdf">Export PDF</a></li>
+                        </ul>
+                    </li>
+                    <li class="role-section admin-only"><a href="#publishers" class="nav-link" data-section="publishers-content"><i class="icon-publishers"></i> Publishers</a></li>
+                    <li class="role-section admin-only"><a href="#locations" class="nav-link" data-section="locations-content"><i class="icon-locations"></i> Locations</a></li>
+
+                    <li class="role-section manager-only"><a href="#location-orders" class="nav-link" data-section="location-orders-content"><i class="icon-orders"></i> Location Orders</a></li>
+                    <li class="role-section manager-only"><a href="#working-hours" class="nav-link" data-section="working-hours-content"><i class="icon-hours"></i> Working Hours</a></li>
+                    
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content-wrapper">
+            <header class="app-header">
+                <div class="header-left">
+                    <button id="menu-toggle" class="menu-toggle-btn">☰</button>
+                    <span id="current-section-title">Dashboard</span> </div>
+                <div class="header-right">
+                    <span id="user-info">Loading...</span> <button id="logout-button" class="logout-btn">Logout</button> </div>
+            </header>
+
+            <main class="content-area" id="content-area">
+                <section id="dashboard-content" class="content-section active">
+                    <h2>System Overview</h2> <div class="dashboard-metrics">
+                        <div class="metric-card">
+                            <h3>Revenue (Last 7 days)</h3> <p id="metric-revenue">Loading...</p> <span class="metric-description">Completed orders</span> </div>
+                        <div class="metric-card">
+                            <h3>Top 5 Books (Last 7 days)</h3> <ul id="metric-popular-books">
+                                <li>Loading...</li> </ul>
+                            <span class="metric-description">By quantity sold</span> </div>
+                        <div class="metric-card">
+                            <h3>Needs Restock</h3> <ul id="metric-low-stock">
+                                <li>Loading...</li> </ul>
+                            <span class="metric-description">Stock below 10</span> </div>
+                         <div class="metric-card">
+                            <h3>New Orders (Today)</h3> <p id="metric-new-orders">Loading...</p> <span class="metric-description">Status 'pending' or 'paid'</span> </div>
+                    </div>
+                </section>
+
+                <section id="books-content" class="content-section">
+                    <h2>Books Management</h2>
+                    <div class="controls-container">
+                        <div class="search-container">
+                            <input type="search" id="book-search-input" placeholder="Search by title...">
+                            <button id="book-search-button">Search</button>
+                        </div>
+                        <button id="add-book-button" class="action-button">Add New Book</button>
+                    
+                    </div>
+                
+                    <div id="book-list-container">
+                        <p>Loading books...</p>
+                        </div>
+                
+                    <div id="book-form-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button" onclick="closeBookForm()">&times;</span>
+                            <h3 id="book-form-title">Add New Book</h3>
+                            <form id="book-form">
+                                <input type="hidden" id="book-id"> <div class="form-group">
+                                    <label for="book-title">Title:</label>
+                                    <input type="text" id="book-title" required>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label for="book-author">Author:</label>
+                                    <select id="book-author" required>
+                                        <option value="">Select Author...</option>
+                                        </select>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label for="book-category">Category:</label>
+                                    <select id="book-category" required>
+                                        <option value="">Select Category...</option>
+                                        </select>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label for="book-publisher">Publisher:</label>
+                                    <select id="book-publisher" required>
+                                        <option value="">Select Publisher...</option>
+                                        </select>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label for="book-year">Publication Year:</label>
+                                    <input type="number" id="book-year" required min="1450">
+                                </div>
+                
+                                <div class="form-group">
+                                    <label for="book-price">Price:</label>
+                                    <input type="number" id="book-price" required step="0.01" min="0">
+                                </div>
+                
+                                 <div class="form-group">
+                                    <label for="book-discount">Discount (%):</label>
+                                    <input type="number" id="book-discount" value="0" step="0.01" min="0" max="100">
+                                </div>
+                
+                                <div class="form-group">
+                                    <label for="book-description">Description:</label>
+                                    <textarea id="book-description" rows="4"></textarea>
+                                </div>
+                
+                                <div class="form-actions">
+                                    <button type="submit" class="action-button">Save Book</button>
+                                    <button type="button" class="cancel-button" onclick="closeBookForm()">Cancel</button>
+                                </div>
+                                 <div id="book-form-error" class="error-message" style="text-align: center;"></div>
+                            </form>
+                        </div>
+                    </div>
+                
+                </section>
+                <section id="authors-content" class="content-section">
+                    <h2>Authors Management</h2>
+                    <div class="controls-container">
+                        <div class="search-container">
+                            <input type="search" id="author-search-input" placeholder="Search by name...">
+                            <button id="author-search-button">Search</button>
+                        </div>
+                        <button id="add-author-button" class="action-button">Add New Author</button>
+                    </div>
+                
+                    <div id="author-list-container">
+                        <p>Loading authors...</p> 
+                    </div>
+                
+                    <div id="author-form-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button" onclick="closeAuthorForm()">&times;</span> <h3 id="author-form-title">Add New Author</h3>
+                            <form id="author-form">
+                                <input type="hidden" id="author-id">
+                                <div class="form-group">
+                                    <label for="author-first-name">First Name:</label>
+                                    <input type="text" id="author-first-name"> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="author-last-name">Last Name:</label>
+                                    <input type="text" id="author-last-name" required> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="author-birth-date">Birth Date:</label>
+                                    <input type="date" id="author-birth-date">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="action-button">Save Author</button>
+                                    <button type="button" class="cancel-button" onclick="closeAuthorForm()">Cancel</button> </div>
+                                <div id="author-form-error" class="error-message" style="text-align: center;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="categories-content" class="content-section">
+                    <h2>Categories Management</h2>
+                    <div class="controls-container">
+                         <div class="search-container">
+                             <input type="search" id="category-search-input" placeholder="Search by name...">
+                             <button id="category-search-button">Search</button>
+                         </div>
+                         <button id="add-category-button" class="admin-only action-button">Add New Category</button>
+                    </div>
+                
+                    <div id="category-list-container">
+                         <p>Loading categories...</p> 
+                    </div>
+                
+                    <div id="category-form-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button" onclick="closeCategoryForm()">&times;</span> <h3 id="category-form-title">Add New Category</h3>
+                            <form id="category-form">
+                                 <input type="hidden" id="category-id">
+                                <div class="form-group">
+                                    <label for="category-name">Name:</label>
+                                    <input type="text" id="category-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category-description">Description:</label>
+                                    <textarea id="category-description" rows="3"></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="action-button">Save Category</button>
+                                    <button type="button" class="cancel-button" onclick="closeCategoryForm()">Cancel</button> </div>
+                                 <div id="category-form-error" class="error-message" style="text-align: center;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section id="clients-content" class="content-section">
+                <h2>Clients Management</h2>
+                <div class="controls-container">
+                    <div class="search-container">
+                        <input type="search" id="client-search-input" placeholder="Search by name, email, phone...">
+                        <button id="client-search-button">Search</button>
+                    </div>
+                    <button id="add-client-button" class="action-button">Add New Client</button>
+                </div>
+    
+                <div id="client-list-container">
+                    <p>Loading clients...</p>
+                </div>
+    
+                <div id="client-form-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button" onclick="closeClientForm()">&times;</span>
+                            <h3 id="client-form-title">Add New Client</h3>
+                            <form id="client-form">
+                                <input type="hidden" id="client-id">
+                                <div class="form-group">
+                                    <label for="client-first-name">First Name:</label>
+                                    <input type="text" id="client-first-name" maxlength="50">
+                                </div>
+                                <div class="form-group">
+                                    <label for="client-last-name">Last Name:</label>
+                                    <input type="text" id="client-last-name" maxlength="50"> </div>
+                                <div class="form-group">
+                                    <label for="client-phone">Phone Number:</label>
+                                    <input type="tel" id="client-phone" required maxlength="20"> </div>
+                                <div class="form-group">
+                                    <label for="client-email">Email:</label>
+                                    <input type="email" id="client-email" maxlength="100"> </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="action-button">Save Client</button>
+                                    <button type="button" class="cancel-button" onclick="closeClientForm()">Cancel</button>
+                                </div>
+                                <div id="client-form-error" class="error-message" style="text-align: center;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="employees-content" class="content-section">
+                    <h2>Employees Management</h2>
+                     <div class="controls-container">
+                         <div class="search-container" id="employee-search-container">
+                             <input type="search" id="employee-search-input" placeholder="Search by name, email, phone...">
+                             <button id="employee-search-button">Search</button>
+                         </div>
+                         <button id="add-employee-button" class="action-button">Add New Employee</button>
+                     </div>
+                    <div id="employee-list-container">
+                        <p>Loading employees...</p>
+                    </div>
+                
+                    <div id="employee-form-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button" onclick="closeEmployeeForm()">&times;</span>
+                            <h3 id="employee-form-title">Add New Employee</h3>
+                            <form id="employee-form">
+                                <input type="hidden" id="employee-id">
+                                <div class="form-group">
+                                    <label for="employee-first-name">First Name:</label>
+                                    <input type="text" id="employee-first-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employee-last-name">Last Name:</label>
+                                    <input type="text" id="employee-last-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employee-phone">Phone Number:</label>
+                                    <input type="tel" id="employee-phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employee-email">Email:</label>
+                                    <input type="email" id="employee-email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employee-password">Password:</label>
+                                    <input type="password" id="employee-password" placeholder="Leave blank to keep unchanged">
+                                     <small id="password-help" class="form-text text-muted">Required when creating a new employee.</small>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="employee-role">Role:</label>
+                                    <select id="employee-role" required>
+                                        <option value="">Select Role...</option>
+                                        </select>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="employee-location">Location:</label>
+                                    <select id="employee-location"> <option value="">Select Location (if applicable)...</option>
+                                        </select>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="action-button">Save Employee</button>
+                                    <button type="button" class="cancel-button" onclick="closeEmployeeForm()">Cancel</button>
+                                </div>
+                                <div id="employee-form-error" class="error-message" style="text-align: center;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                
+                  <section id="publishers-content" class="content-section admin-only">
+                     <h2>Publishers</h2>
+                     <p>Publisher management table and forms will be here...</p>
+                 </section>
+                  <section id="locations-content" class="content-section admin-only">
+                     <h2>Locations</h2>
+                     <p>Location management table and forms will be here...</p>
+                 </section>
+                 <section id="stock-content" class="content-section"> <h2>Stock</h2>
+                    <div class="controls-container">
+                        
+                    <div id="stock-list-container">
+                        <p>Loading stock levels...</p>
+                    </div>
+                </section>
+
+                <section id="recent-orders-content" class="content-section">
+                    <h2>Orders Management</h2>
+                    <div class="controls-container">
+                        <div class="filter-container" style="display: flex; gap: 15px; align-items: center;">
+                             <label for="order-status-filter">Status:</label>
+                             <select id="order-status-filter">
+                                 <option value="">All</option>
+                                 <option value="pending">Pending</option>
+                                 <option value="paid">Paid</option>
+                                 <option value="shipped">Shipped</option>
+                                 <option value="completed">Completed</option>
+                                 <option value="cancelled">Cancelled</option>
+                             </select>
+                             <label for="order-date-from">Date From:</label>
+                             <input type="date" id="order-date-from">
+                             <label for="order-date-to">Date To:</label>
+                             <input type="date" id="order-date-to">
+                             <button id="order-filter-button">Apply Filters</button>
+                        </div>
+                        <div id="order-list-container">
+                            <p>Loading stock levels...</p>
+                        </div>
+                    </div>
+                    
+                
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

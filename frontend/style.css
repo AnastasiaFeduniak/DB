@@ -1,0 +1,99 @@
+/* Імпорт шрифту з Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+body {
+    /* Використовуємо імпортований шрифт */
+    font-family: 'Poppins', sans-serif;
+    /* Ледь помітний градієнт або просто світлий фон */
+    background-color: #f8f9fa; /* Світліший сірий */
+    /* background: linear-gradient(to bottom right, #e9ecef, #f8f9fa); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #495057; /* Трохи темніший текст за замовчуванням */
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 40px 50px; /* Збільшимо відступи */
+    border-radius: 12px; /* Більш заокруглені кути */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* М'якша, розсіяна тінь */
+    text-align: center;
+    width: 100%;
+    max-width: 420px; /* Трохи ширше */
+    border: 1px solid #e9ecef; /* Додаткова тонка рамка */
+}
+
+h1 {
+    margin-bottom: 30px; /* Більший відступ знизу */
+    color: #343a40; /* Темніший заголовок */
+    font-weight: 600; /* Трохи жирніший */
+    font-size: 1.8em; /* Трохи більший */
+}
+
+.form-group {
+    margin-bottom: 25px; /* Більший відступ між групами */
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px; /* Більший відступ від поля */
+    color: #495057;
+    font-weight: 500; /* Трохи жирніший */
+    font-size: 0.95em;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px; /* Збільшимо внутрішні відступи */
+    border: 1px solid #ced4da; /* Сіра рамка */
+    border-radius: 6px; /* Заокруглені кути для полів */
+    box-sizing: border-box;
+    font-size: 1em;
+    color: #495057;
+    background-color: #f8f9fa; /* Легкий фон для полів */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Плавні переходи */
+}
+
+/* Ефект при фокусі на полі вводу */
+.form-group input:focus {
+    outline: none; /* Прибираємо стандартний контур */
+    border-color: #80bdff; /* Світло-синя рамка при фокусі */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); /* Легка тінь при фокусі */
+    background-color: #fff; /* Білий фон при фокусі */
+}
+
+button {
+    background-color: #0d6efd; /* Оновлений синій колір */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px; /* Заокруглення як у полів */
+    cursor: pointer;
+    font-size: 1.05em; /* Трохи більший текст кнопки */
+    font-weight: 500;
+    width: 100%;
+    transition: background-color 0.2s ease, transform 0.1s ease; /* Плавніші переходи */
+    margin-top: 10px; /* Додатковий відступ зверху */
+}
+
+button:hover {
+    background-color: #0b5ed7; /* Трохи темніший синій при наведенні */
+}
+
+/* Легкий ефект натискання */
+button:active {
+  transform: scale(0.98);
+}
+
+.error-message {
+    color: #dc3545;
+    margin-bottom: 20px; /* Збільшимо відступ */
+    min-height: 1.2em;
+    font-size: 0.9em;
+    font-weight: 500; /* Зробимо текст помилки помітнішим */
+    text-align: center; /* Вирівняємо по центру */
+}
